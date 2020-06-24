@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <style>
+        .d1 {
+            width: 700px;
+            height: 500px;
+            background-color: black;
+            opacity: 0.7;
+            color: white;
+            margin: 0 auto;
+        }
+
+        h4 {
+            margin: 20px;
+        }
+
+        .in1 {
+            margin-left: 100px;
+        }
+
+        #uname {
+            width: 150px;
+            border-radius: 5%;
+            border: 1px;
+            outline-style: none;
+        }
+
+        #btn1 {
+            background-color: skyblue;
+            width: 150px;
+            margin-left: 160px;
+            border-radius: 5%;
+            outline-style: none;
+        }
+    </style>
+    <script>
+        // 用户名
+        function check_uname() {
+
+            uname_msg.innerHTML = "请输入3~8位用户名";
+
+        }
+        function del_uname() {
+            var $uname = uname.value;
+            if (!$uname) {
+                uname_msg.innerHTML = "用户名不能为空";
+
+            } else if ($uname.length < 3 || $uname.length > 8) {
+                uname_msg.innerHTML = "格式错误，请输入正确的用户名";
+            } else {
+                uname_msg.innerHTML = "√";
+            }
+        }
+        // 密码
+        function check_upwd() {
+            $upwd = upwd.value;
+            if (!$upwd) {
+                upwd_msg.innerHTML = "请输入4-8为密码";
+            }
+        }
+        function del_upwd() {
+            $upwd = upwd.value;
+            if (!$upwd) {
+                upwd_msg.innerHTML = "密码不能为空";
+            }
+            else if ($upwd.length < 4 || $upwd.length > 8) {
+                upwd_msg.innerHTML = "格式错误，请输入正确的密码";
+            } else {
+                upwd_msg.innerHTML = "√";
+
+            }
+        }
+
+        // 验证密码
+        function check_upwd2() {
+            $upwd2 = upwd2.value;
+            if (!$upwd2) {
+                upwd2_msg.innerHTML = "请再一次输入密码";
+            }
+        }
+        function del_upwd2() {
+            $upwd = upwd.value;
+            $upwd2 = upwd2.value;
+            if (!$upwd2) {
+                upwd2_msg.innerHTML = "密码不能为空";
+            }
+            else if ($upwd2 !== $upwd) {
+                upwd2_msg.innerHTML = "两次密码不一致，请重新输入";
+            } else {
+                upwd2_msg.innerHTML = "√";
+
+            }
+        }
+
+        // 验证邮箱
+        function check_email() {
+            $email = email.value;
+            if (!$email) {
+                email_msg.innerHTML = "请输入邮箱";
+            }
+        }
+        function del_email() {
+            $email = email.value;
+
+            if (!$email) {
+                email_msg.innerHTML = "邮箱不能为空";
+            }
+            // else if ($upwd2 !== $upwd) {
+            //     email_msg.innerHTML = "两次密码不一致，请重新输入";
+            // } 
+            else {
+                email_msg.innerHTML = "√";
+
+            }
+        }
+        // 验证手机号
+        function check_phone() {
+            $phone = phone.value;
+            if (!$phone) {
+                phone_msg.innerHTML = "请输入手机号";
+            }
+        }
+        function del_phone() {
+            $phone = phone.value;
+            if (!$phone) {
+                phone_msg.innerHTML = "手机号不能为空";
+            }
+            else if ($phone.length !== 11) {
+                phone_msg.innerHTML = "格式错误，请输入正确的手机号";
+            } else {
+                phone_msg.innerHTML = "√";
+
+            }
+        }
+
+        function check() {
+            var $uname = uname.value;
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    // var arr = JSON.parse(str);
+                    // console.log(arr);
+                    if (str == 1) {
+                        alert("可以注册");
+                        reg();
+                        location.href = "http://127.0.0.1:8080/user_pro_list.html";
+                    } else {
+                        alert("用户名重复");
+                    }
+                }
+            }
+            xhr.open("get", "/pro/v1/check_name/" + $uname, true);
+
+            xhr.send();
+        }
+
+
+        function reg() {
+            var $uname = uname.value;
+            var $upwd = upwd.value;
+            var $upwd2 = upwd2.value;
+            var $email = email.value;
+            var $phone = phone.value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    // var arr = JSON.parse(str);
+                    // console.log(arr);
+                    if (str == 1) {
+                        alert("注册成功");
+                    } else {
+                        alert("注册失败");
+                    }
+                }
+            }
+            xhr.open("post", "/pro/v1/reg", true);
+            var formdata = "uname=" + $uname + "&upwd=" + $upwd + "&email=" + $email + "&phone=" + $phone;
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(formdata);
+
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div class="d1">
+        <h4>新用户注册</h4>
+        <div class="in1">用&nbsp;&nbsp;户&nbsp;&nbsp;名：
+            <input type="text" placeholder="请输入用户名" id="uname" onfocus="check_uname()" onblur="del_uname()">
+            <span id="uname_msg"></span>
+        </div>
+        <br>
+        <div class="in1">登录密码：
+            <input type="password" placeholder="请输入密码" id="upwd" onfocus="check_upwd()" onblur="del_upwd()">
+            <span id="upwd_msg"></span>
+        </div><br>
+
+
+        <div class="in1">确认密码：
+            <input type="password" placeholder="请确认密码" id="upwd2" onfocus="check_upwd2()" onblur="del_upwd2()">
+            <span id="upwd2_msg"></span>
+        </div><br>
+
+
+        <div class="in1">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
+            <input type="text" placeholder="请输入邮箱" id="email" onfocus="check_email()" onblur="del_email()">
+            <span id="email_msg"></span>
+        </div><br>
+
+
+        <div class="in1">手&nbsp;&nbsp;机&nbsp;&nbsp;号：
+            <input type="text" placeholder="请输入手机号" id="phone" onfocus="check_phone()" onblur="del_phone()">
+            <span id="phone_msg"></span>
+        </div><br>
+
+        <br><br><br>
+        <button id="btn1" onclick="check()">新用户注册</button>
+    </div>
+
+</body>
+
+</html>

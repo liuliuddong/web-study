@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax练习</title>
+    <script>
+        function show() {
+            //1 创建对象
+            var xhr = new XMLHttpRequest();
+            // 4 响应
+            xhr.onreadystatechange = function () {
+                // 判断
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    d1.innerHTML = str;
+                    // console.log(str);
+                }
+            }
+            // 2 创建请求
+            xhr.open("get", "/ajax/ex1", true);
+            // 3 发送
+            xhr.send();
+        }
+    </script>
+
+</head>
+
+<body>
+    <!-- 练习  点击按钮  访问接口  get  /ajax/ex1   
+    响应是终于得到了正确的响应数据  
+    前台吧得到的响应数据放到div中显示
+    -->
+    <div id="d1"></div>
+    <br>
+    <button onclick="show()">显示</button>
+</body>
+
+</html>

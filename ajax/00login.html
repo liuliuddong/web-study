@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			function show(){
+				var $uname=uname.value;
+				var $upwd=upwd.value;
+				if(!$uname){
+					alert("用户名不能为空");
+					return;
+				}
+				if(!$upwd){
+					alert("密码不能为空");
+					return;
+				}
+				// 创建对象
+				var xhr=new XMLHttpRequest();
+				// 接受响应
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var str=xhr.responseText;
+						if(str==1){
+							d1.innerHTML="登录成功";
+						}else{
+							d1.innerHTML="登录失败";
+						}
+						
+					}
+				}
+				// 创建请求
+				xhr.open("get", `/ajax/login?uname=${$uname}&upwd=${$upwd}`, true);
+				// xhr.open("get","/ajax/login?uanme="+$uname+"&upwd="+$upwd+",true);
+				// 发送请求
+				xhr.send();
+				
+			}
+			
+		</script>
+	</head>
+	<body>
+		用户名<input type="text" name="" id="uname" value="" /><br>
+		密码：<input type="text" name="" id="upwd" value="" /><br>
+		<div id="d1"></div>
+		<button type="button" onclick="show()">显示 </button>
+	</body>
+</html>

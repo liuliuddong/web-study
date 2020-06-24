@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>post登录</title>
+    <script>
+        function login() {
+            var $uname = uname.value;
+            var $upwd = upwd.value;
+            //判断
+            if (!$uname) {
+                alert("用户名不能为空");
+                return;
+            }
+            if (!$upwd) {
+                alert("密码不能为空");
+                return;
+            }
+            //创建对象 
+            var xhr = new XMLHttpRequest();
+            //接受请求
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    d1.innerHTML = str;
+                }
+            }
+            //创建请求
+            xhr.open("post", "/ajax/post_login", true);
+            //发送请求
+            //var formdata = `uname=${$uname}&upwd=${$upwd}`;
+            var formdata = "uname=" + $uname + "&upwd=" + $upwd;
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(formdata);
+
+        }
+    </script>
+</head>
+
+<body>
+    用户名：
+    <input type="text" name="" id="uname">
+    <br> 密码:
+    <input type="text" id="upwd">
+    <br>
+    <div id="d1"></div>
+    <button onclick="login()">登录</button>
+</body>
+
+</html>

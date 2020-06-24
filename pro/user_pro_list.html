@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户列表</title>
+    <script>
+        function show() {
+            // 1 创建对象
+            var xhr = new XMLHttpRequest();
+            // 4 接受响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    // d1.innerHTML = str;
+                    // 做表格
+                    var arr = JSON.parse(str);
+                    var htmlstr = `
+                    <table border="1px" align="center" cellspacing="0px" width="800px" bordercolor="purple">
+                        <tr>
+                            
+                           <td>编号</td>
+                           <td>姓名</td>
+                           <td>密码</td>
+                           <td>邮箱</td>
+                           <td>电话</td>
+                           <td>avatar</td>
+                           <td>用户姓名</td>
+                           <td>性别</td>
+                           <td>操作</td>
+                       </tr> 
+                       
+                    `;
+                    // 循环
+                    for (var i = 0; i < arr.length; i++) {
+                        // 判断性别
+                        // arr[i].gender == "1" ? "男" : arr[i].gender == "0" ? "女" : "保密";
+                        htmlstr += `
+                        <tr>
+                            <td>${arr[i].uid}</td>
+                            <td>${arr[i].uname}</td>
+                            <td>${arr[i].upwd}</td>
+                            <td>${arr[i].email}</td>
+                            <td>${arr[i].phone}</td>
+                            <td>${arr[i].avatar}</td>
+                            <td>${
+                            arr[i].user_name == null ? "保密" : arr[i].user_name
+                            }
+                            </td>
+                            <td>${
+                            arr[i].gender == "1" ? "男" : arr[i].gender == "0" ? "女" : "保密"
+                            }
+                            </td >
+                            <td>
+                            <a href="http://127.0.0.1:8080/user_pro_uid_list.html?uid=${arr[i].uid}">修改</a>
+                            <a href="javascript:del(${arr[i].uid})">删除</a>
+                            </td>
+                        </tr >
+                        `;
+                    }
+                    htmlstr += `</table >`;
+                    d1.innerHTML = htmlstr;
+                }
+            }
+            // 2 创建请求
+            xhr.open("get", "/pro/v1/list", true);
+            // 3 发送请求
+            xhr.send();
+        }
+        function del($uid) {
+            //var $uid = uid.value;
+            //if (!uid) {
+            //   alert("用户编号不能为空");
+            //  return;
+            // }
+            // 创建对象
+            var xhr = new XMLHttpRequest();
+            // 接受响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    if (str == 1) {
+                        alert("删除成功");
+                        //重新跳转到本页面，相当于f5
+                        // location.href = "http://127.0.0.1/user_pro_list.html";
+                        show();
+                    } else {
+                        //d1.innerHTML = "删除失败";
+                        alert("删除失败");
+                    }
+                }
+            }
+            // 创建请求
+            xhr.open("get", `/pro/v1/delete/${$uid}`, true);
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body onload="show()">
+    <!-- <button onclick="show()">显示</button>-->
+    <div id="d1"></div>
+</body>
+
+</html>

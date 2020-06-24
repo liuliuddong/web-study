@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<script>
+			function login() {
+            var $uname = uname.value;
+            var $upwd = upwd.value;
+						// 判断
+						if(!$uname){alert("用户名不能让为空");return;}
+						if(!upwd){alert("密码不能为空");return;}
+            // 1 创建xhr异步对象
+            var xhr = new XMLHttpRequest();
+            // 4 创建监听  接受响应】
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    // d1.innerHTML = str;
+                    alert(str);
+                }
+            }
+            // 3 创建请求
+            // xhr.open("get", `/ajax/login?uname=${$uname}&&upwd=${$upwd}`, true);
+            xhr.open("get", "/ajax/login?uname=" + $uname + "&&upwd=" + $upwd, true);
+            // 4 发送请求 
+            xhr.send();
+
+        }
+
+    </script>
+	</head>
+
+	<body>
+		<input type="text" id="uname">
+		<input type="text" id="upwd">
+		<button onclick="login()">登录</button>
+		<div id="d1"></div>
+	</body>
+
+</html>

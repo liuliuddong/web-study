@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			// get("/login_restful/:uname&:upwd"
+			function show(){
+				var $uname=uname.value;
+				var $upwd=upwd.value;
+				// 非空验证
+				if(!$uname){
+					alert("用户名不能为空");
+					return;
+				}
+				if(!$upwd){
+					alert("密码不能为空");
+					return;
+				}
+				// 常见请求对象
+				var xhr=new XMLHttpRequest();
+				// 接受响应
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var str=xhr.responseText;
+						d1.innerHTML=str;
+					}
+				}
+				// 创建请求
+				// xhr.open("get",`/ajax/login_restful/${$uname}&${$upwd}`,true);
+				xhr.open("get","/ajax/login_restful/"+$uname+"&"+$upwd,true);
+				// 发送请求
+			  xhr.send();
+				
+				
+			}
+		</script>
+	</head>
+	<body>
+		<input type="text" name="" id="uname" value="" /><br>
+		<input type="text" name="" id="upwd" value="" /><br>
+		<div id="d1">
+			
+		</div>
+		<button type="button" onclick="show()">显示</button>
+	</body>
+</html>

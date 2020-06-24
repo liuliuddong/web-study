@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查询所有列表</title>
+    <script>
+        function show() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var str = xhr.responseText;
+                    //str 是一个json字符串，我们需要把它解析为js对象
+                    var arr = JSON.parse(str);
+                    // d1.innerHTML = str;
+                    //拼接成表格
+                    var htmlstr = `
+                   <table border="1" cellspacing="0px" width="800px" bordercolor="purple">
+                       <tr>
+                           <td>编号</td>
+                           <td>姓名</td>
+                           <td>密码</td>
+                           <td>邮箱</td>
+                           <td>电话</td>
+                           <td>头像</td>
+                           <td>真实姓名</td>
+                           <td>性别</td>
+                           <td>操作</td>
+                       </tr>
+                   
+                   `;
+                    //循环
+                    for (var i = 0; i < arr.length; i++) {
+                        var gender = "保密";
+                        if (arr[i].gender == 0) {
+                            gender = "男";
+                        } else if (arr[i].gender == 1) {
+                            gender = "女";
+
+                        } else {
+                            gender = "不详";
+                        }
+
+                        htmlstr += `
+                        <tr>
+                            <td>${arr[i].uid}</td>
+                            <td>${arr[i].uname}</td>
+                            <td>${arr[i].upwd}</td>
+                            <td>${arr[0].email}</td>
+                            <td>${arr[i].phone}</td>
+                            <td>${arr[i].avatar}</td>
+                            <td>${arr[i].user_name}</td>
+                            <td>${gender}</td>
+                            <td>
+                                    <a href="#">修改</a>
+                                    <a href="#">删除</a>
+                            </td>
+                        </tr>
+                        `;
+                    }
+
+
+                    htmlstr += `</table>`;
+                    d1.innerHTML = htmlstr;
+                }
+
+            }
+            xhr.open("get", "ajax/list", true);
+            xhr.send();
+
+        }
+    </script>
+</head>
+
+<body>
+    <div id="d1"></div>
+    <button onclick="show()">显示</button>
+</body>
+
+</html>
